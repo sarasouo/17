@@ -1,0 +1,708 @@
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>PanificaApp - Gerenciador do Seu Jorge</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
+<style>
+  /* Resets e básico */
+  * {
+    box-sizing: border-box;
+  }
+  body, html {
+    margin: 0; 
+    padding: 0;
+    font-family: 'Roboto', sans-serif;
+    background-color: #fef9f1;
+    color: #3d3d3d;
+    min-height: 100vh;
+  }
+
+  /* --- TELA DE LOGIN --- */
+  #tela-login {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #FFB347 0%, #FFCC33 100%);
+    background-attachment: fixed;
+    padding: 20px;
+    position: relative;
+  }
+  #tela-login .login-box {
+    background: #fff9f0;
+    padding: 35px 30px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(255, 122, 1, 0.3);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+    position: relative;
+  }
+  #tela-login .logo {
+    font-size: 52px;
+    margin-bottom: 10px;
+    color: #d07300;
+    text-shadow: 1px 1px 3px #b05e00;
+  }
+  #tela-login h2 {
+    font-weight: 700;
+    font-size: 30px;
+    margin-bottom: 30px;
+    color: #d07300;
+  }
+  #tela-login input {
+    width: 100%;
+    padding: 14px 18px;
+    margin-bottom: 20px;
+    font-size: 18px;
+    border-radius: 10px;
+    border: 2px solid #ffb347;
+    transition: border-color 0.3s ease;
+    outline: none;
+  }
+  #tela-login input:focus {
+    border-color: #ff9900;
+    box-shadow: 0 0 8px #ff9a0d;
+  }
+  #tela-login button {
+    width: 100%;
+    padding: 14px;
+    font-size: 20px;
+    background-color: #ff9900;
+    border: none;
+    border-radius: 12px;
+    color: white;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 8px 15px rgba(255, 153, 0, 0.3);
+    transition: background-color 0.3s ease;
+  }
+  #tela-login button:hover {
+    background-color: #e68200;
+  }
+  #tela-login .padaria-icone {
+    position: absolute;
+    top: 40px;
+    right: 40px;
+    font-size: 60px;
+    color: #ffbf47ff;
+    opacity: 0.25;
+    user-select: none;
+  }
+  #tela-login #btn-visitante {
+    margin-top: 10px;
+    background-color: #b57c0d;
+  }
+  #tela-login #btn-visitante:hover {
+    background-color: #9a680b;
+  }
+
+  /* --- TELA PRINCIPAL --- */
+  #tela-principal {
+    display: none;
+    min-height: 100vh;
+    background-color: #fffbf0;
+    padding: 20px 25px 100px; /* bottom for footer */
+  }
+
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #ffb347;
+    padding: 15px 25px;
+    border-radius: 15px;
+    box-shadow: 0 8px 20px #ffb347aa;
+    margin-bottom: 30px;
+    color: #5c3300;
+  }
+  header h1 {
+    font-weight: 900;
+    font-size: 24px;
+  }
+  header .usuario {
+    font-weight: 600;
+    font-size: 18px;
+  }
+  header button {
+    background: #d07300;
+    border: none;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  header button:hover {
+    background-color: #b05e00;
+  }
+
+  main {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  section {
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 6px 18px #ffd8a233;
+    padding: 25px 30px;
+    margin-bottom: 30px;
+  }
+  section h2 {
+    color: #d07300;
+    font-weight: 700;
+    font-size: 22px;
+    margin-bottom: 25px;
+    text-align: center;
+    user-select: none;
+  }
+
+  /* Formulários e campos */
+  form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: center;
+  }
+  input[type=text], 
+  input[type=number], 
+  select {
+    font-size: 17px;
+    padding: 12px 18px;
+    border-radius: 12px;
+    border: 2px solid #f8c471;
+    min-width: 150px;
+    flex-grow: 1;
+    transition: border-color 0.3s ease;
+  }
+  input[type=text]:focus, input[type=number]:focus, select:focus {
+    border-color: #ff9900;
+    box-shadow: 0 0 10px #ffb347aa;
+    outline: none;
+  }
+
+  button[type=submit] {
+    background-color: #ff9900;
+    border: none;
+    color: white;
+    font-weight: 700;
+    font-size: 18px;
+    border-radius: 15px;
+    padding: 14px 28px;
+    cursor: pointer;
+    box-shadow: 0 8px 15px rgba(255, 153, 0, 0.5);
+    flex-grow: 0;
+    min-width: 180px;
+    transition: background-color 0.3s ease;
+  }
+  button[type=submit]:hover {
+    background-color: #e68200;
+  }
+
+  /* Relatórios */
+  #relatorios {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  .relatorio-card {
+    flex: 1 1 250px;
+    background-color: #fff3e0;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px #ffbb4477;
+    padding: 22px;
+    font-weight: 700;
+    color: #5c3300;
+    user-select: none;
+    text-align: center;
+    font-size: 20px;
+  }
+  .relatorio-card span.valor {
+    display: block;
+    font-size: 36px;
+    margin-top: 10px;
+    color: #b05e00;
+  }
+
+  /* Lista Fiados */
+  #lista-fiados {
+    max-height: 280px;
+    overflow-y: auto;
+    border: 2px solid #ffd18a;
+    border-radius: 16px;
+    padding: 15px;
+    box-shadow: inset 0 0 15px #ffbb4433;
+    background: #fff9f0;
+  }
+  #lista-fiados div {
+    margin-bottom: 14px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #ffcc77;
+    font-weight: 600;
+    font-size: 18px;
+    color: #6a3800;
+  }
+  #lista-fiados div span.dias {
+    font-weight: 400;
+    font-size: 13px;
+    color: #bf4500;
+    margin-left: 8px;
+  }
+  #lista-fiados div:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+  }
+
+  /* Suporte - vídeo */
+  #suporte-video {
+    width: 100%;
+    border-radius: 16px;
+    box-shadow: 0 8px 25px rgba(222,159,0,0.3);
+    max-width: 720Spx;
+    margin: 0 auto;
+    display: block;
+  }
+
+  /* Rodapé */
+  footer {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    background-color: #ffb347;
+    padding: 14px 20px;
+    text-align: center;
+    font-weight: 600;
+    color: #631f00;
+    box-shadow: 0 -6px 15px #ffbb4499;
+    user-select: none;
+    z-index: 100;
+  }
+
+  /* Responsividade */
+  @media (max-width: 640px) {
+    main {
+      padding: 0 10px;
+    }
+    #relatorios {
+      flex-direction: column;
+      gap: 20px;
+    }
+    .relatorio-card {
+      font-size: 18px;
+    }
+    .relatorio-card span.valor {
+      font-size: 28px;
+    }
+    form {
+      flex-direction: column;
+      gap: 12px;
+    }
+    input, select, button[type=submit] {
+      width: 100%;
+      flex-grow: 0;
+      min-width: auto;
+    }
+  }
+</style>
+</head>
+<body>
+
+<!-- Tela Login -->
+<div id="tela-login" aria-label="Tela de login do PanificaApp">
+  <div class="login-box" role="main">
+    <div class="logo" aria-hidden="true">🍞</div>
+    <h2>Bem-vindo ao PanificaApp</h2>
+    <input type="text" id="input-usuario" placeholder="Usuário" aria-label="Campo para usuário" autocomplete="username" />
+    <input type="password" id="input-senha" placeholder="Senha" aria-label="Campo para senha" autocomplete="current-password" />
+    <button id="btn-login" aria-label="Entrar no aplicativo">Entrar</button>
+    <button id="btn-visitante" aria-label="Entrar como visitante">Entrar como Cliente</button>
+  </div>
+</div>
+
+<!-- Tela Principal -->
+<div id="tela-principal" aria-live="polite" aria-label="Painel principal do PanificaApp">
+
+  <header>
+    <h1>PanificaApp 🍞</h1>
+    <div class="usuario" aria-label="Nome do usuário logado"></div>
+    <button id="btn-logout" aria-label="Sair do aplicativo">Sair</button>
+  </header>
+
+  <main>
+    <!-- Registro vendas e gastos -->
+    <section aria-label="Registrar vendas e despesas">
+      <h2>Registrar Venda ou Despesa</h2>
+      <form id="form-registro" aria-describedby="desc-registrar">
+        <input type="text" id="descricao" placeholder="Descrição" aria-label="Descrição da venda ou despesa" required />
+        <input type="number" id="valor" placeholder="Valor (R$)" aria-label="Valor monetário" required min="0.01" step="0.01"/>
+        <select id="tipo" aria-label="Tipo de registro">
+          <option value="venda">Venda</option>
+          <option value="gasto">Despesa</option>
+        </select>
+        <button type="submit" aria-label="Registrar venda ou despesa">Registrar</button>
+      </form>
+    </section>
+
+    <!-- Resumo do Dia -->
+    <section aria-label="Resumo do dia financeiro">
+      <h2>Resumo do Dia</h2>
+      <div id="resumo-dia" style="text-align:center; font-size:1.4rem; color:#7a4300; font-weight:bold; margin-top:15px;">
+        Carregando...
+      </div>
+    </section>
+
+    <!-- Gerenciar fiados -->
+    <section aria-label="Gerenciar fiados">
+      <h2>Clientes Fiado</h2>
+      <form id="form-fiado" aria-describedby="desc-fiado">
+        <input type="text" id="nome-fiado" placeholder="Nome do cliente" aria-label="Nome do cliente fiado" required />
+        <input type="number" id="valor-fiado" placeholder="Valor (R$)" aria-label="Valor fiado" required min="0.01" step="0.01"/>
+        <input type="number" id="peso-fiado" placeholder="Peso" aria-label="Peso fiado" required min="0.01" step="0.01"/>
+        <input type="text" id="produto-fiado" placeholder="Produto do comprado" aria-label="Produto do cliente fiado" required />
+        <button type="submit" aria-label="Registrar fiado">Registrar Fiado</button>
+      </form>
+      <div id="lista-fiados" tabindex="0" aria-label="Lista de clientes com fiado" role="region" aria-live="polite"></div>
+    </section>
+
+    <!-- Relatórios -->
+    <section aria-label="Relatórios financeiros">
+      <h2>Relatórios</h2>
+      <div id="relatorios" role="region" aria-live="polite">
+        <div class="relatorio-card" aria-label="Total de vendas">
+          Vendas Totais
+          <span class="valor" id="relatorio-vendas">R$ 0,00</span>
+        </div>
+        <div class="relatorio-card" aria-label="Total de gastos">
+          Gastos Totais
+          <span class="valor" id="relatorio-gastos">R$ 0,00</span>
+        </div>
+        <div class="relatorio-card" aria-label="Lucro total">
+          Lucro Total
+          <span class="valor" id="relatorio-lucro">R$ 0,00</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Suporte -->
+    <section aria-label="Suporte e ajuda">
+      <h2>Suporte</h2>
+      <video width="600" controls>
+  <source src="video/suporte.mp4" type="video/mp4">
+  Seu navegador não suporta o elemento de vídeo.
+</video>
+
+    </section>
+  </main>
+
+  <footer>
+    © 2025 - PanificaApp
+  </footer>
+</div>
+
+<script>
+  // Estado
+  let vendas = [];
+  let gastos = [];
+  let fiados = [];
+
+  // Elementos
+  const telaLogin = document.getElementById('tela-login');
+  const telaPrincipal = document.getElementById('tela-principal');
+  const btnLogin = document.getElementById('btn-login');
+  const btnLogout = document.getElementById('btn-logout');
+  const btnVisitante = document.getElementById('btn-visitante');
+  const usuarioDisplay = document.querySelector('header .usuario');
+  const resumoDiaEl = document.getElementById('resumo-dia');
+
+  // Lista de usuários permitidos (administração)
+const usuariosAdmin = [
+  { usuario: 'admin', senha: 'admin123' },
+  { usuario: 'seujorge', senha: 'pao2025' },
+  { usuario: 'maria', senha: 'padaria' }
+];
+
+let usuarioLogado = null;
+let permissaoAdmin = false;
+
+  // Login padrão: permitir apenas usuários da lista
+  btnLogin.addEventListener('click', () => {
+    const usuarioInput = document.getElementById('input-usuario').value.trim();
+    const senhaInput = document.getElementById('input-senha').value.trim();
+
+    const usuarioEncontrado = usuariosAdmin.find(u => u.usuario === usuarioInput && u.senha === senhaInput);
+    if (!usuarioEncontrado) {
+      alert('Usuário ou senha inválidos.');
+      return;
+    }
+
+    telaLogin.style.display = 'none';
+    telaPrincipal.style.display = 'block';
+    usuarioDisplay.textContent = `Olá, ${usuarioInput} (Admin)`;
+    usuarioLogado = usuarioInput;
+    permissaoAdmin = true;
+    vendas = [];
+    gastos = [];
+    fiados = [];
+    atualizarRelatorios();
+  });
+
+  // Adiciona janela de visitante
+function mostrarJanelaVisitante() {
+  telaLogin.style.display = 'none';
+  telaPrincipal.style.display = 'none';
+  let janela = document.getElementById('tela-visitante');
+  if (!janela) {
+    janela = document.createElement('div');
+    janela.id = 'tela-visitante';
+    janela.style.display = 'flex';
+    janela.style.flexDirection = 'column';
+    janela.style.alignItems = 'center';
+    janela.style.justifyContent = 'center';
+    janela.style.minHeight = '100vh';
+    janela.style.background = '#fffbe8';
+    janela.innerHTML = `
+      <h2 style="color:#d07300;">Produtos Vendidos Hoje</h2>
+      <ul id="lista-produtos-vendidos" style="font-size:1.2rem; margin:20px 0 30px 0; padding:0; list-style:none;"></ul>
+      <button id="btn-voltar-login" style="background:#d07300;color:white;font-weight:700;padding:12px 28px;border-radius:12px;border:none;cursor:pointer;">Voltar</button>
+    `;
+    document.body.appendChild(janela);
+    document.getElementById('btn-voltar-login').onclick = () => {
+      janela.style.display = 'none';
+      telaLogin.style.display = 'flex';
+    };
+  } else {
+    janela.style.display = 'flex';
+  }
+  atualizarListaProdutosVendidos();
+}
+
+function atualizarListaProdutosVendidos() {
+  const hojeStr = new Date().toISOString().slice(0,10);
+  const vendasHoje = vendas.filter(v => v.data && v.data.startsWith(hojeStr));
+  const lista = document.getElementById('lista-produtos-vendidos');
+  lista.innerHTML = '';
+  if (vendasHoje.length === 0) {
+    lista.innerHTML = '<li>Nenhum produto vendido hoje.</li>';
+    return;
+  }
+  vendasHoje.forEach(v => {
+    const li = document.createElement('li');
+    li.textContent = v.descricao + ' - R$ ' + v.valor.toFixed(2);
+    lista.appendChild(li);
+  });
+}
+
+// Botão "Entrar como Visitante" para acesso rápido
+btnVisitante.addEventListener('click', () => {
+  mostrarJanelaVisitante();
+  usuarioLogado = 'Visitante';
+  permissaoAdmin = false;
+  vendas = [];
+  gastos = [];
+  fiados = [];
+  atualizarRelatorios();
+});
+
+  btnLogout.addEventListener('click', () => {
+    vendas = [];
+    gastos = [];
+    fiados = [];
+    telaPrincipal.style.display = 'none';
+    telaLogin.style.display = 'flex';
+    // Limpar campos login
+    document.getElementById('input-usuario').value = '';
+    document.getElementById('input-senha').value = '';
+  });
+
+  // Função para obter o ID do usuário logado (mock para exemplo)
+function getUsuarioId() {
+  // No backend real, você deve obter o ID do usuário autenticado
+  // Aqui, para exemplo, vamos usar o nome como ID (ajuste conforme seu backend)
+  return usuarioLogado || 'admin';
+}
+
+// Formulário registro vendas e gastos (agora envia para o backend)
+document.getElementById('form-registro').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const descricao = e.target.descricao.value.trim();
+  const valor = parseFloat(e.target.valor.value);
+  const tipo = e.target.tipo.value;
+  if(!descricao || isNaN(valor) || valor <= 0) {
+    alert('Preencha todos os campos corretamente!');
+    return;
+  }
+  const registro = {
+    descricao,
+    valor,
+    data: new Date().toISOString(),
+    usuario: { nome: getUsuarioId() }
+  };
+  try {
+    const url = tipo === 'venda' ? 'http://localhost:8080/api/vendas' : 'http://localhost:8080/api/gastos';
+    const resp = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(registro)
+    });
+    if (!resp.ok) {
+      let backendMsg = '';
+      try {
+        const errJson = await resp.json();
+        backendMsg = errJson.message || JSON.stringify(errJson);
+      } catch {
+        backendMsg = await resp.text();
+      }
+      throw new Error(`Erro ao registrar. Status: ${resp.status}. Resposta: ${backendMsg}`);
+    }
+    // Opcional: buscar novamente os dados do backend para atualizar a tela
+    await carregarVendasEGastos();
+    e.target.reset();
+    atualizarRelatorios();
+  } catch (err) {
+    alert('Erro ao registrar: ' + err.message);
+    console.error('Detalhes do erro:', err);
+  }
+});
+
+// Formulário registro fiados (agora envia produto e peso para o backend)
+document.getElementById('form-fiado').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const nome = e.target['nome-fiado'].value.trim();
+  const valor = parseFloat(e.target['valor-fiado'].value);
+  const peso = parseFloat(e.target['peso-fiado'].value);
+  const produto = e.target['produto-fiado'].value.trim();
+  if(!nome || isNaN(valor) || valor <= 0 || isNaN(peso) || peso <= 0 || !produto) {
+    alert('Preencha todos os campos do fiado corretamente!');
+    return;
+  }
+  const registro = {
+    nomeCliente: nome,
+    valor,
+    peso,
+    produto,
+    data: new Date().toISOString(),
+    usuario: { nome: getUsuarioId() }
+  };
+  try {
+    const url = 'http://localhost:8080/api/fiados';
+    const resp = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(registro)
+    });
+    if (!resp.ok) {
+      let backendMsg = '';
+      try {
+        const errJson = await resp.json();
+        backendMsg = errJson.message || JSON.stringify(errJson);
+      } catch {
+        backendMsg = await resp.text();
+      }
+      throw new Error(`Erro ao registrar fiado. Status: ${resp.status}. Resposta: ${backendMsg}`);
+    }
+    await carregarFiados();
+    e.target.reset();
+    atualizarListaFiados();
+  } catch (err) {
+    alert('Erro ao registrar fiado: ' + err.message);
+    console.error('Detalhes do erro:', err);
+  }
+});
+
+// Função para buscar vendas e gastos do backend
+async function carregarVendasEGastos() {
+  try {
+    const usuarioId = getUsuarioId();
+    const vendasResp = await fetch(`http://localhost:8080/api/vendas/usuario/${usuarioId}`);
+    vendas = vendasResp.ok ? await vendasResp.json() : [];
+    const gastosResp = await fetch(`http://localhost:8080/api/gastos/usuario/${usuarioId}`);
+    gastos = gastosResp.ok ? await gastosResp.json() : [];
+  } catch {
+    vendas = [];
+    gastos = [];
+  }
+}
+
+// Função para buscar fiados do backend
+async function carregarFiados() {
+  try {
+    const usuarioId = getUsuarioId();
+    const fiadosResp = await fetch(`http://localhost:8080/api/fiados/usuario/${usuarioId}`);
+    fiados = fiadosResp.ok ? await fiadosResp.json() : [];
+  } catch {
+    fiados = [];
+  }
+}
+
+// Atualiza relatórios e resumo do dia
+function atualizarRelatorios() {
+  const totalVendas = vendas.reduce((acc, v) => acc + v.valor, 0);
+  const totalGastos = gastos.reduce((acc, g) => acc + g.valor, 0);
+  const lucro = totalVendas - totalGastos;
+
+  document.getElementById('relatorio-vendas').textContent = `R$ ${totalVendas.toFixed(2)}`;
+  document.getElementById('relatorio-gastos').textContent = `R$ ${totalGastos.toFixed(2)}`;
+  document.getElementById('relatorio-lucro').textContent = `R$ ${lucro.toFixed(2)}`;
+
+  atualizarResumoDia();
+}
+
+// Atualiza resumo do dia (considera registros adicionados hoje)
+function atualizarResumoDia() {
+  const hojeStr = new Date().toISOString().slice(0,10);
+  const vendasHoje = vendas.filter(v => v.data && v.data.startsWith(hojeStr));
+  const gastosHoje = gastos.filter(g => g.data && g.data.startsWith(hojeStr));
+  const totalVendasHoje = vendasHoje.reduce((acc, v) => acc + v.valor, 0);
+  const totalGastosHoje = gastosHoje.reduce((acc, g) => acc + g.valor, 0);
+  const lucroHoje = totalVendasHoje - totalGastosHoje;
+  resumoDiaEl.innerHTML = `
+    <p>Vendas: <strong>R$ ${totalVendasHoje.toFixed(2)}</strong></p>
+    <p>Gastos: <strong>R$ ${totalGastosHoje.toFixed(2)}</strong></p>
+    <p>Lucro: <strong>R$ ${lucroHoje.toFixed(2)}</strong></p>
+  `;
+}
+
+// Atualiza lista de fiados na tela
+function atualizarListaFiados() {
+  const lista = document.getElementById('lista-fiados');
+  lista.innerHTML = '';
+  if (fiados.length === 0) {
+    lista.innerHTML = '<div>Nenhum fiado registrado.</div>';
+    return;
+  }
+  fiados.forEach(f => {
+    const data = f.data ? new Date(f.data) : null;
+    let dias = '';
+    if (data) {
+      const diff = Math.floor((Date.now() - data.getTime()) / (1000*60*60*24));
+      dias = diff === 0 ? '(hoje)' : `(${diff} dia${diff>1?'s':''})`;
+    }
+    lista.innerHTML += `<div>${f.nomeCliente} - R$ ${f.valor.toFixed(2)} - ${f.produto || ''} - ${f.peso ? f.peso+'kg' : ''} <span class="dias">${dias}</span></div>`;
+  });
+}
+
+// Carregar fiados ao logar/admin
+btnLogin.addEventListener('click', async () => {
+  // ...existing code...
+  await carregarFiados();
+  atualizarListaFiados();
+});
+
+// Carregar fiados ao entrar como visitante (opcional: pode deixar vazio)
+btnVisitante.addEventListener('click', async () => {
+  await carregarFiados();
+  atualizarListaFiados();
+});
+
+// Inicializa lista de fiados corretamente
+carregarFiados().then(atualizarListaFiados);
+
+// Inicializa relatórios corretamente
+atualizarRelatorios();
+</script>
+
+</body>
+</html>
